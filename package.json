@@ -1,6 +1,6 @@
 {
   "name": "jinhui-shared-utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Contains useful JavaScript utilities and GitFlow commands for FE project",
   "bin": {
     "git-log": "./git-log.sh"
