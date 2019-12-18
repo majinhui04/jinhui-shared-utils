@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="/js/vue.min.js"></script>
+    <script src="/http/index.umd.js"></script>
+    <style>
+        button {
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+<!--防止伪类:active失效-->
+<body ontouchstart="">
+<div id="app">
+    <div>{{message}}</div>
+    <button @click="demo0">正常请求</button>
+    <button @click="demo2">重复请求</button>
+    <button @click="demo4">超时请求</button>
+    <button @click="demo1">取消请求</button>
+    <button @click="demo5">API请求</button>
+</div>
+<script>
+    var Request = window.http.Request;
+    var api2 = [
+        {
+            name: 'getAddressList',
+            label: '结算信息',
+            path: '/api/{id}',
+            method: 'post',
+            error:function (body) {
+                console.log(5555,body);
+                body.xxx=1;
+            }
+        },
+        {
+            name: 'getAddressList1',
+            label: '结算信息',
+            path: '/api/{id}',
+            method: 'post'
+        }
+    ]
+    var api = {
+        'getAddressList': [
+            '/api/{id}',
+            {
+                'action': '查询地址',
+                'method': 'post',
+                'unRedirect': true
+            }
+        ],
+        'getAreaList': [
+            '/aaaaa',
+            {
+                'action': '查询省市区',
+                'method': 'get'
+            }
+        ],
+        'delAddress': [
+            '/gateway/user/userAddress/delete',
+            {
+                'action': '删除地址',
+                'method': 'post'
+            }
+        ],
+        'setDefaultAddr': [
+            '/gateway/user/userAddress/setDefault',
+            {
+                'action': '设置默认地址',
+                'method': 'post'
+            }
+        ],
+        'addOrEditAddr': [
+            '/gateway/user/userAddress/save',
+            {
+                'action': '新增/修改地址',
+                'method': 'post'
+            }
+        ]
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {
+            result: {},
+            message: 'Hello Vue!',
+            items: [],
+            cancel: null
+        },
+        mounted() {
+
+            // API.userLogin({ name: 'jack' }, { timeout: 5000, headers: { a: 1 } }).then(console.log);
+        },
+        methods: {
+            // 人工取消请求队列
+            demo1() {
+                window.HttpClient = new Request({
+                    timeout: 10000,
+                    baseURL: '/',
+                    //stopRepeatRequest: true
+                });
+                window.HttpClient.get('/api/aa').then(console.log).catch(console.error);
+
+                setTimeout(function () {
+                    console.log(1);
+                    window.HttpClient.cancel();
+                    console.log(2, window.HttpClient._queue);
+                }, 0)
+
+            },
+            // 重复请求
+            demo2() {
+                window.HttpClient = new Request({
+                    debug: true,
+                    timeout: 10000,
+                    baseURL: '/',
+                    stopRepeatRequest: true
+                });
+                window.HttpClient.get('/api/aa', {}, {stopRepeatRequest: true}).then(console.log).catch(console.error);
+                setTimeout(function () {
+                    window.HttpClient.get('/api/aa', {}, {stopRepeatRequest: true}).then(console.log).catch(console.error);
+                }, 1000)
+                setTimeout(function () {
+                    window.HttpClient.get('/api/aa', {}, {stopRepeatRequest: true}).then(console.log).catch(console.error);
+                }, 1500);
+
+
+            },
+            demo0() {
+                window.HttpClient = new Request({
+                    debug: true,
+                    api:api2,
+                    isTrim: true,
+                    getResponseSuccess(body) {
+                        console.log('getResponseSuccess', body)
+                        if ([10].includes(body.code)) {
+                            return true;
+                        }
+                        return false;
+                    },
+                    beforeRequest({url, path, payload, meta}) {
+                        for(let key in payload) {
+                            if(payload.hasOwnProperty(key) && payload[key] === undefined) {
+                                delete payload[key]
+                            }
+                        }
+                    },
+                    afterRequest() {
+
+                    },
+                    handleError({url, path, payload, meta, body}) {
+                        console.log('handleError', meta, body);
+                        if(meta.error) {
+                            meta.error(body)
+                        }
+                    },
+                    handleSuccess({url, path, payload, meta, body}) {
+                        console.log('handleSuccess', meta, body);
+                    },
+                    getHeaders() {
+
+                    },
+                    setHeaders(config) {
+                        if (config.$withoutHeader) {
+                            // 覆盖headers
+                            config.headers = {
+                                'token': ''
+                            }
+                        } else {
+                            config.headers['token'] = '12345678'
+                        }
+
+                    }
+                });
+                // window.HttpClient.get('/api/aa', {name: 1}, {$withoutHeader: false, headers: {a: 1}}).then(res => {
+                //     console.log('success', res);
+                // }).catch(err => {
+                //     console.error('1111err', err.message, err);
+                // });
+                window.HttpClient.request({
+                        url: 'getAddressList',
+                        payload: {id: 'aa'},
+                        method: 'POST',
+                        $withoutHeader: false,
+                        headers: {a: 1}
+                    }
+                ).then(res => {
+                    console.log('success', res);
+                }).catch(err => {
+                    console.error('1111err', err.message, err);
+                });
+                const API = window.HttpClient.toAPI(api);
+                // API.getAddressList({id: 'aa'},{
+                //     $withoutHeader: false,
+                //     headers: {a: 1}
+                // }).then(res => {
+                //     console.log('success', res);
+                // }).catch(err => {
+                //     console.error('1111err', err.message, err);
+                // });
+            },
+            demo4() {
+                window.HttpClient = new Request({
+                    baseURL: '/'
+                });
+                window.HttpClient.get('/api/aa', {name: 1}, {timeout: 1000}).then(res => {
+                    console.log('success', res);
+                }).catch(err => {
+                    console.error('err', err.message, err);
+                });
+            },
+            demo5() {
+                var Urls = [
+                    {
+                        name: 'login',
+                        path: '/api/aa',
+                        method: 'get'
+                    }
+                ];
+                window.HttpClient = new Request({
+                    baseURL: '/',
+                    getResponseSuccess(body) {
+                        if ([0].includes(body.code)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                let API = window.HttpClient.toAPI(Urls)
+                API.login({name: 1}).then(res => {
+                    console.log('success', res);
+                }).catch(err => {
+                    console.error('err', err.message, err);
+                });
+            },
+            getMsg() {
+            },
+            //cancelGetMsg 方法跟上面的setTimeout函数是一样的效果，因为手速不够快，哦不，是因为网速太快，导致我来不及点取消获取按钮，数据就获取成功了
+            cancelGetMsg() {
+                // 在这里去判断你的id 1 2 3，你默认是展示的tab1，点击的时候不管你上一个请求有没有执行完都去调用这个cancel()，
+                this.cancel();
+            }
+        }
+    });
+</script>
+</body>
+
+</html>

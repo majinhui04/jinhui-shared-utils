@@ -1,0 +1,2 @@
+"use strict";var index={removeSpace:function(e){if(!e.replace)return e;return e.replace(/(^\s*)|(\s*$)/g,"")},isEmpty:function(e){return null==e||""===e.trim()},keyMirror:function(e){var n,r={};for(n in e)e.hasOwnProperty(n)&&(r[n]=n);return r},loadScript:function(e){var n=new XMLHttpRequest;n.open("GET",e,!0),n.send(null)},sleep:function(n){return new Promise(function(e){setTimeout(function(){e()},n)})}};module.exports=index;
+//# sourceMappingURL=index.js.map
