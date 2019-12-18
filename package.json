@@ -39,9 +39,9 @@
   "author": "jinhui.m",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/majinhui04/jinhui-shared-utils.git/issues"
+    "url": "https://github.com/majinhui04/jinhui-shared-utils/issues"
   },
-  "homepage": "https://github.com/majinhui04/jinhui-shared-utils.git#readme",
+  "homepage": "https://github.com/majinhui04/jinhui-shared-utils#readme",
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/plugin-external-helpers": "^7.7.4",
