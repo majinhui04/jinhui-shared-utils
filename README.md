@@ -1,5 +1,5 @@
-## 简介
-`sharegoods-utils`是一个前端的小工具集合，支出输出`commonjs`以及`umd`包,请使用`npm run doc`查看具体函数和类
+# 简介
+一个前端的小工具集合，支出输出`commonjs`以及`umd`包
 
 ## 功能
 
@@ -10,49 +10,16 @@
 - [ ] eslint
 - [ ] less\sass编译
 
-## 开发
-```bash
-# 下载代码
-$ git clone http://git.mr.com/frontend/sharegoods-utils.git
-
-# 开发、调试
-$ npm run dev myLibrary
-
-# 构建代码
-$ npm run build myLibrary
-
-# 登录 npm
-$ npm login
-
-# 发布包，请注意，如果非首次发布，需要修改 package.json 的版本字段 version
-$ npm publish
-
-```
-
 
 ## 使用
 
 ```bash
 # 安装包
-$ npm install --save sharegoods-utils
+$ npm install --save jinhui-shared-utils
 ```
 
-```js
-// 引用 myLibrary
-import myLibrary from 'sharegoods-utils/libs/myLibrary'
 
-// 调用 myLibrary 的方法
-myLibrary.someFunc()
-```
-
-## library 的命名规范
-- 请在 src 目录下新建并开发你的 library，如案例的 urlParams 文件夹，其中 index.js 为入口文件；
-- 如果暴露的是个类或构造函数，请用大驼峰命名法 (big camel-case)，如：MyClass、MyConstructor；
-- 其他，请用小驼峰命名法 (little camel-case)：如：myLibrary
-
-
-
-# sharegoods-utils/http
+# http
 
 > This is a secondary encapsulation library that extends Axios.
 
@@ -93,20 +60,12 @@ myLibrary.someFunc()
 > payload: 请求参数对象  body: 服务端返回的json 或者 错误信息 meta: 自定义的参数 url: restful后的url path: restful前的url response:axios的response config: axios的config 
 
 
-## Setup
-install：
-```bash
-npm i sharegoods-utils -S
-```
-
-
-
 ## Usage
 The content of both requests and responses is 'json'：
 
 ### 基础
 ```javascript
-import { Request } from 'sharegoods-utils/http';
+import { Request } from 'jinhui-shared-utils/http';
 const http = new Request({
     baseURL:'/api'
 });
@@ -159,7 +118,7 @@ http.request({
 ### 高级
 
 ```javascript
-import { Request,HttpError,ResponseType,ContentType } from 'sharegoods-utils/http';
+import { Request,HttpError,ResponseType,ContentType } from 'jinhui-shared-utils/http';
 
 const api = {
   'getAddressList': [
@@ -370,8 +329,15 @@ http.download('/download/file',{name:1},{method:'post'}).then(console.log).catch
 
 
 
-## 关于 Git 日志
+# 关于 Git 日志
 自动生成`git commit`记录用以统计个人项目周报，全组项目周报，版本、分支差异记录自动生成Tag等
+
+
+```bash
+# 安装包
+$ npm install jinhui-shared-utils -g
+```
+
 
 ### 功能
   * 生成(本人:默认/其他人/团队)(任意时间段/上周:默认)(任意项目/当前项目:默认)日志
@@ -399,7 +365,7 @@ http.download('/download/file',{name:1},{method:'post'}).then(console.log).catch
 
 ### 使用
 ```bash
-npm install sharegoods-utils -g
+npm install jinhui-shared-utils -g
 ```
 **示例为安装在全局后切到项目目录使用，因此不需要`-r`参数, 并且本地代码与线上保持同步**
 #### 周报
@@ -498,7 +464,7 @@ sg-log -r <path-to-your-repository> -a someone -s 2018-01-01 -u 2018-01-31 -d gi
 * 根据配置项可生成各种git记录，欢迎优化拓展
 
 
-## 参考
+# 参考
 - [babel javaScript 编译器](https://www.babeljs.cn/)
 - [jest 单元测试](https://www.npmjs.com/package/jest)
 - [docjs 文档生成](http://www.dba.cn/book/jsdoc/)

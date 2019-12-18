@@ -12,7 +12,7 @@
     "dev": "better-npm-run dev",
     "build": "better-npm-run build",
     "libs": "npm run build signature && npm run build helpers && npm run build http",
-    "publish": "npm run libs && sh ./build/release.sh"
+    "publish": "sh ./build/release.sh"
   },
   "betterScripts": {
     "build": {

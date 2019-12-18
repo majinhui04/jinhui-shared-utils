@@ -13,6 +13,7 @@ then
 
   # build
   VERSION=$VERSION
+  npm run libs
 
   # commit
   # git add -A
