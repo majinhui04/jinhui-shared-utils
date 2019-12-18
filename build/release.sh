@@ -12,18 +12,17 @@ then
   echo "Releasing $VERSION ..."
 
   # build
-  VERSION=$VERSION npm run dist
+  VERSION=$VERSION
 
   # commit
-  git add -A
-  git commit -m "[build] $VERSION"
-  npm version $VERSION --message "[release] $VERSION"
+  # git add -A
+  # git commit -m "docs: $VERSION"
+  npm version $VERSION --message " $VERSION"
 
   # publish
   git push origin master
   git checkout develop
   git rebase master
-  #git push github dev
   git push origin develop
   git push origin --tags
 
