@@ -1,6 +1,6 @@
 {
   "name": "jinhui-shared-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Contains useful JavaScript utilities and GitFlow commands for FE project",
   "bin": {
     "git-log": "./git-log.sh"
@@ -12,7 +12,7 @@
     "dev": "better-npm-run dev",
     "build": "better-npm-run build",
     "libs": "npm run build signature && npm run build helpers && npm run build http",
-    "publish":"npm run libs && sh ./build/release.sh"
+    "publish": "npm run libs && sh ./build/release.sh"
   },
   "betterScripts": {
     "build": {
